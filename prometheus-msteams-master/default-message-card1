@@ -27,7 +27,7 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "{{.GroupLabels.alertname}}",
+                                    "text": "Security Alert",
                                     "wrap": true,
                                     "size": "Large",
                                     "weight": "Bolder"
@@ -42,7 +42,7 @@
             "type": "TextBlock",
             "size": "Medium",
             "weight": "Bolder",
-            "text": "{{.GroupLabels.alertname}}",
+            "text": " {{.GroupLabels.alertname}} ",
             "horizontalAlignment": "Center",
             "color": "Attention"
         },
@@ -50,34 +50,28 @@
             "type": "TextBlock",
             "text": " {{.CommonAnnotations.summary }} ",
             "wrap": true
-        },
-        {{$firstIndex := true}}{{- range $index, $alert := .Alerts }}{{if $firstIndex}} {{$firstIndex = false}}{{else}}, {{end}}
-
-	{
+        }
+		{
             "type": "TextBlock",
-            "text": " {{ $alert.Annotations.description }} ",
-             "wrap": true
-         },
+            "text": " {{- range $index, $alert := .Alerts }}{{- if $index }},{{- end }}
 	
-	{{$first := true}} {{ range $key, $value := $alert.Labels }}
-	{{if $first}}{{$first = false}}{{else}}, {{end}}
-	  {
-            "type": "TextBlock",
-            "text": " {{ $key }} is {{ $value }}",
-             "wrap": true
-         }
-                 
-       
-        {{ end  }}	
+	{{ $alert.Annotations.description }}
 	
-	{{- end }}
-            
+	 {{- range $key, $value := $alert.Labels }}
      
+           "{{ $key }}" : "{{ $value }}"
+       
+        {{- end  }}    
+	
+	
+	{{- end }} ",
+            "wrap": true
+        }
     ],
     "actions": [
         {
             "type": "Action.OpenUrl",
-            "title": "view in alertManager",
+            "title": " {{.GroupLabels.alertname}} ",
             "url": "{{.ExternalURL}}"
         }
     ],
